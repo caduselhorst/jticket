@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "pcprodut")
+@Table(name = "pcprodfilial")
 @IdClass(ProdutoFilialId.class)
 public class ProdutoFilial {
     
@@ -33,6 +33,6 @@ public class ProdutoFilial {
     private String codfilial;
     
     private String foralinha;
-    private Integer qtdminimaatacado;
+    private Integer qtminimaatacado;
     
 }
