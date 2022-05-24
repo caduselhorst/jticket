@@ -96,7 +96,7 @@ public class EtiquetaEletronicaService {
                 .unidade(p.getUnidade())
                 .qtdEstoque(esqueDisponivel);
             
-            if(filial.getUtilizavendaporembalagem().equals("S")){
+            if(filial.getUtilizavendaporembalagem() != null && filial.getUtilizavendaporembalagem().equals("S")){
                 // Verifica preços na tabela de embalagem (rotina 2017)
                 FiltroEmbalagem filtro = FiltroEmbalagem.builder()
                         .codfilial(filial.getCodigo())
