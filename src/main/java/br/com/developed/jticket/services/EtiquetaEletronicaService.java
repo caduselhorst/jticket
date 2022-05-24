@@ -66,7 +66,6 @@ public class EtiquetaEletronicaService {
         } else {
             // busca preços alterados na 201
             FiltroTabelaPreco filtro = FiltroTabelaPreco.builder()
-                    .filial(filial)
                     .regiao(regiao)
                     .dataAlteracaoInicial(dataInicial)
                     .dataAlteracaoFinal(dataFinal)

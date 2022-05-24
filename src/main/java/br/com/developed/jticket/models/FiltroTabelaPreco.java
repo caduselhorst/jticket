@@ -27,6 +27,5 @@ public class FiltroTabelaPreco {
     private Date dataAlteracaoInicial;
     private Date dataAlteracaoFinal;
     private Regiao regiao;
-    private Filial filial;
     private List<Long> codProds;
 }

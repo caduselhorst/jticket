@@ -30,10 +30,6 @@ public class TabelaPrecoSpec {
                 predicates.add(builder.greaterThanOrEqualTo(root.get("dtultaltpvenda"), filtro.getDataAlteracaoInicial()));
             }
             
-            if(filtro.getFilial() != null) {
-                predicates.add(builder.equal(root.get("codfilial"), filtro.getFilial().getCodigo()));
-            }
-            
             if(filtro.getRegiao() != null) {
                 predicates.add(builder.equal(root.get("numregiao"), filtro.getRegiao().getNumregiao()));
             }

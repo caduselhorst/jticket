@@ -32,7 +32,6 @@ public class TabelaPreco {
     @Id
     private Long numregiao;
     
-    private String codfilial;
     private Date dtultaltpvenda;
     
 }
