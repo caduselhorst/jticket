@@ -51,7 +51,7 @@ public class EtiquetaEletronicaService {
         
         Set<Long> codprods = new HashSet<>();
         
-        if(filial.getUtilizavendaporembalagem().equals("S")) {
+        if(filial.getUtilizavendaporembalagem() != null && filial.getUtilizavendaporembalagem().equals("S")) {
             // busca preços alterados na 2017
             
             FiltroEmbalagem filtro = FiltroEmbalagem.builder()
