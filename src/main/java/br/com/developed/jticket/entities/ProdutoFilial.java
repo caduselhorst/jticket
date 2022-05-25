@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  *
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@ToString
 @Table(name = "pcprodfilial")
 @IdClass(ProdutoFilialId.class)
 public class ProdutoFilial {
