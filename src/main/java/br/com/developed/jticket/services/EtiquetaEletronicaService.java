@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Service;
  *
  * @author carlos
  */
+@Slf4j
 @Service
 public class EtiquetaEletronicaService {
     
@@ -113,6 +115,8 @@ public class EtiquetaEletronicaService {
                 }
             } else {
                 // Verifica preços na tabela pctabpr e utiliza as funçẽs nativas para buscar dados de preço e preço de atacado
+                log.info(String.format("Analisando produto: codprod[%d] filial[%s] codauxiliar[%d] numregiao[%d]",
+                        p.getCodprod(), filial.getCodigo(), p.getCodauxiliar(), regiao.getNumregiao()));
                 BuscaPreco bp = tabelaPrecoRepository.buscaPreco(filial.getCodigo(), regiao.getNumregiao(), p.getCodauxiliar());
                 ProdutoFilial pf = produtoFilialRepository.findById(new ProdutoFilialId(p.getCodprod(), filial.getCodigo())).get();
                 
