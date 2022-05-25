@@ -5,6 +5,7 @@
  */
 package br.com.developed.jticket.entities;
 
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -51,6 +52,7 @@ public class Produto {
     
     private Long codcategoria;
     private Long codsubcategoria;
+    private Date dtexclusao;
     
     private Integer qtminimaatacado; 
 }

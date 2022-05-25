@@ -66,6 +66,8 @@ public class ProdutoSpec {
                 predicates.add(inClause);
             }
             
+            predicates.add(builder.isNull(root.get("dtexclusao")));
+            
             return builder.and(predicates.toArray(new Predicate[]{}));
         };
     }

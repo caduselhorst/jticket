@@ -115,24 +115,28 @@ public class EtiquetaEletronicaService {
                 }
             } else {
                 // Verifica preços na tabela pctabpr e utiliza as funçẽs nativas para buscar dados de preço e preço de atacado
-                log.info(String.format("Analisando produto: codprod[%d] filial[%s] codauxiliar[%d] numregiao[%d]",
-                        p.getCodprod(), filial.getCodigo(), p.getCodauxiliar(), regiao.getNumregiao()));
-                BuscaPreco bp = tabelaPrecoRepository.buscaPreco(filial.getCodigo(), regiao.getNumregiao(), p.getCodauxiliar());
-                ProdutoFilial pf = produtoFilialRepository.findById(new ProdutoFilialId(p.getCodprod(), filial.getCodigo())).get();
-                
-                int qtMinAtacado = pf.getQtminimaatacado();
-                
-                if(qtMinAtacado == 0) {
-                    qtMinAtacado = p.getQtminimaatacado();
+                if(filial.getCodigo() != null && regiao.getNumregiao() != null && p.getCodauxiliar() != null) {
+                    BuscaPreco bp = tabelaPrecoRepository.buscaPreco(filial.getCodigo(), regiao.getNumregiao(), p.getCodauxiliar());
+                    ProdutoFilial pf = produtoFilialRepository.findById(new ProdutoFilialId(p.getCodprod(), filial.getCodigo())).get();
+
+                    int qtMinAtacado = pf.getQtminimaatacado();
+
+                    if(qtMinAtacado == 0) {
+                        qtMinAtacado = p.getQtminimaatacado();
+                    }
+
+                    registros.add(registroToledoBuilder
+                        .precoItemUnitario(bp.getPvenda())
+                        .precoItemUnitarioPromo(bp.getPvenda())
+                        .precoItemMaster(bp.getPvendaatac() * qtMinAtacado)
+                        .precoItemMasterPromo(bp.getPvendaatac() * qtMinAtacado)
+                        .promocao(false)
+                        .build());
+                } else {
+                    log.warn(String.format("Não foi possível processar o produto [%d]: codigo de barras: %d", 
+                            p.getCodprod(), p.getCodauxiliar()));
                 }
-                
-                registros.add(registroToledoBuilder
-                    .precoItemUnitario(bp.getPvenda())
-                    .precoItemUnitarioPromo(bp.getPvenda())
-                    .precoItemMaster(bp.getPvendaatac() * qtMinAtacado)
-                    .precoItemMasterPromo(bp.getPvendaatac() * qtMinAtacado)
-                    .promocao(false)
-                    .build());
+                    
             }
         });
         
