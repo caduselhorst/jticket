@@ -118,8 +118,8 @@ public class EtiquetaEletronicaService {
                 if(filial.getCodigo() != null && regiao.getNumregiao() != null && p.getCodauxiliar() != null) {
                     BuscaPreco bp = tabelaPrecoRepository.buscaPreco(filial.getCodigo(), regiao.getNumregiao(), p.getCodauxiliar());
                     ProdutoFilial pf = produtoFilialRepository.findById(new ProdutoFilialId(p.getCodprod(), filial.getCodigo())).get();
-                    log.info(pf.toString());
-                    int qtMinAtacado = pf.getQtminimaatacado();
+                    //log.info(pf.toString());
+                    int qtMinAtacado = pf.getQtminimaatacado() == null ? 0 : pf.getQtminimaatacado();
 
                     if(qtMinAtacado == 0 && p.getQtminimaatacado() != null) {
                         qtMinAtacado = p.getQtminimaatacado();
