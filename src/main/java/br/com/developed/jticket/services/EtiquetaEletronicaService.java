@@ -121,7 +121,7 @@ public class EtiquetaEletronicaService {
                     log.info(pf.toString());
                     int qtMinAtacado = pf.getQtminimaatacado();
 
-                    if(qtMinAtacado == 0) {
+                    if(qtMinAtacado == 0 && p.getQtminimaatacado() != null) {
                         qtMinAtacado = p.getQtminimaatacado();
                     }
 
