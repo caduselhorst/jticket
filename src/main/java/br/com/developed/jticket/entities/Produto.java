@@ -5,6 +5,7 @@
  */
 package br.com.developed.jticket.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "pcprodut")
-public class Produto {
+public class Produto implements Serializable {
     
     @EqualsAndHashCode.Include
     @Id

@@ -11,6 +11,7 @@ import br.com.developed.jticket.entities.Produto;
 import br.com.developed.jticket.entities.Secao;
 import br.com.developed.jticket.entities.SubCategoria;
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,7 @@ import lombok.Setter;
 public class FiltroProduto {
     
     private Long codigo;
+    private Set<Long> codigos;
     private String descricao;
     private Fornecedor fornecedor;
     private List<Departamento> departamentos;

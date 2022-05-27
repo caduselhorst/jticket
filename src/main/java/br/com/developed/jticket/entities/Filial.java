@@ -5,6 +5,7 @@
  */
 package br.com.developed.jticket.entities;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Filial {
+public class Filial implements Serializable {
     
     @EqualsAndHashCode.Include
     @Id

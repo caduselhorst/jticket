@@ -5,13 +5,10 @@
  */
 package br.com.developed.jticket.entities;
 
-import javax.persistence.Column;
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,7 +26,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "pcsubcategoria")
 @IdClass(SubCategoriaId.class)
-public class SubCategoria {
+public class SubCategoria implements Serializable {
     
     @EqualsAndHashCode.Include
     @Id

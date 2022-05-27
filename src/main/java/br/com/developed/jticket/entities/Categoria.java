@@ -5,11 +5,10 @@
  */
 package br.com.developed.jticket.entities;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,7 +26,7 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @IdClass(CategoriaId.class)
-public class Categoria {
+public class Categoria implements Serializable {
     
     @EqualsAndHashCode.Include
     @Id

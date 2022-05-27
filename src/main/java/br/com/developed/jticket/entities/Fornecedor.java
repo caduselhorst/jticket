@@ -5,6 +5,7 @@
  */
 package br.com.developed.jticket.entities;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "pcfornec")
-public class Fornecedor {
+public class Fornecedor implements Serializable {
     
     @EqualsAndHashCode.Include
     @Id

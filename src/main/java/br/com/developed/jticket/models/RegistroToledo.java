@@ -43,18 +43,18 @@ public class RegistroToledo {
     
     @Override
     public String toString() {
-        String linha = "%d %d %s %s %s %s %s %s %s %s %s %s %s";
+        String linha = "%d %d%s%s%s%s %s %s %s %s %s %s %s";
         
-        String codBarrasAux = "";
-        String dtAlteracao = "";
+        String codBarrasAux = " ";
+        String dtAlteracao = " ";
         
         if(codBarras != null) {
-            codBarrasAux = "9510 0 |" + codBarras.stream().map(String::valueOf).collect(Collectors.joining(" ")) + "|";
+            codBarrasAux = " 9510 0 |" + codBarras.stream().map(String::valueOf).collect(Collectors.joining(" ")) + "| ";
         }
         
         if(dataHoraAlteracaoEtiqueta != null) {
-            dtAlteracao = "9500 0 |" + SDF.format(dataHoraAlteracaoEtiqueta) + "|";
-            codBarrasAux = "";
+            dtAlteracao = " 9500 0 |" + SDF.format(dataHoraAlteracaoEtiqueta) + "| ";
+            codBarrasAux = " ";
         }
         
         String retorno = String.format(linha, 

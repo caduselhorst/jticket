@@ -66,6 +66,12 @@ public class ProdutoSpec {
                 predicates.add(inClause);
             }
             
+            if(filtro.getCodigos() != null) {
+                CriteriaBuilder.In<Long> inClause = builder.in(root.get("codprod"));
+                filtro.getCodigos().forEach(c -> inClause.value(c));
+                predicates.add(inClause);
+            }
+            
             predicates.add(builder.isNull(root.get("dtexclusao")));
             
             return builder.and(predicates.toArray(new Predicate[]{}));
