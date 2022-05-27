@@ -143,6 +143,7 @@ public class EtiquetaEletronicaService {
                 RegistroToledo.RegistroToledoBuilder registroToledoBuilder = RegistroToledo.builder();
                 registroToledoBuilder
                         .codigo(code)
+                        .descricao(p.getDescricao())
                         .departamento(p.getDepartamento().getDescricao())
                         .qtdEstoque(estoqueDisponivel);
                 
