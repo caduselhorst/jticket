@@ -55,5 +55,8 @@ public class Produto implements Serializable {
     private Long codsubcategoria;
     private Date dtexclusao;
     
+    
     private Integer qtminimaatacado; 
+    
+    private Integer qtunitcx;
 }

@@ -187,7 +187,7 @@ public class EtiquetaEletronicaService {
                                     .precoItemMasterPromo(0.0)
                                     .tipo("ATACADO")
                                     .personalizado0(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
-                                    .personalizado1(String.valueOf(emb.getQtunit()))
+                                    .personalizado1(String.valueOf(p.getQtunitcx()))
                                     .personalizado2("1") /* TO DO VERIFICAR */
                                     .personalizado3(String.valueOf(p.getCodprod()))
                                     .personalizado4("6") /* TO DO VERIFICAR */
