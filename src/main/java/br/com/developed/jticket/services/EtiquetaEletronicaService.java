@@ -137,7 +137,7 @@ public class EtiquetaEletronicaService {
         
         produtos.forEach(p -> {
             
-            Integer estoqueDisponivel = produtoRepository.buscaEstoqueDisponivel(p.getCodprod(), filial.getCodigo()).getEstoque();
+            Double estoqueDisponivel = produtoRepository.buscaEstoqueDisponivel(p.getCodprod(), filial.getCodigo()).getEstoque();
             
             if (!somenteEstoquePositivo || (somenteEstoquePositivo && estoqueDisponivel > 0)) {
                 RegistroToledo.RegistroToledoBuilder registroToledoBuilder = RegistroToledo.builder();
