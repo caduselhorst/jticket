@@ -39,11 +39,24 @@ public class RegistroToledo {
     private String departamento;
     private String unidade;
     private Integer qtdEstoque;
-    private Boolean promocao;
+    private String tipo;
+    private String personalizado0;
+    private String personalizado1;
+    private String personalizado2;
+    private String personalizado3;
+    private String personalizado4;
+    private String personalizado5;
+    private String personalizado6;
+    private String personalizado7;
+    private String personalizado8;
+    private String personalizado9;
+    private String personalizado10;
+    private String personalizado11;
+    
     
     @Override
     public String toString() {
-        String linha = "%d %d%s%s%s%s %s %s %s %s %s %s %s";
+        String linha = "%d %d%s%s%s%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s";
         
         String codBarrasAux = " ";
         String dtAlteracao = " ";
@@ -70,7 +83,19 @@ public class RegistroToledo {
                 "5 0 |" + departamento + "|",
                 "70 0 |" + unidade + "|",
                 "50 0 |" + qtdEstoque + "|",
-                "121 0 |" + (promocao ? "PROMO" : "NORMAL") + "|"
+                "121 0 |" + tipo + "|",
+                "200 0 |" + personalizado0 + "|", 
+                "201 0 |" + personalizado0 + "|", 
+                "202 0 |" + personalizado0 + "|", 
+                "203 0 |" + personalizado0 + "|", 
+                "204 0 |" + personalizado0 + "|", 
+                "205 0 |" + personalizado0 + "|", 
+                "206 0 |" + personalizado0 + "|", 
+                "207 0 |" + personalizado0 + "|", 
+                "208 0 |" + personalizado0 + "|", 
+                "209 0 |" + personalizado0 + "|", 
+                "210 0 |" + personalizado0 + "|", 
+                "211 0 |" + personalizado0 + "|" 
                 );
                 
         return retorno;

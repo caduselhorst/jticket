@@ -10,6 +10,8 @@ import br.com.developed.jticket.entities.Produto;
 import br.com.developed.jticket.entities.ProdutoFilial;
 import br.com.developed.jticket.entities.ProdutoFilialId;
 import br.com.developed.jticket.entities.Regiao;
+import br.com.developed.jticket.entities.TabelaPreco;
+import br.com.developed.jticket.entities.TabelaPrecoId;
 import br.com.developed.jticket.models.BuscaPreco;
 import br.com.developed.jticket.models.FiltroEmbalagem;
 import br.com.developed.jticket.models.FiltroTabelaPreco;
@@ -62,13 +64,13 @@ public class EtiquetaEletronicaService {
             this.mensagem = mensagem;
             this.pane = pane;
         }
-
+        
         @Override
         public void run() {
             try {
                 StyledDocument doc = pane.getStyledDocument();
                 Style style = pane.getStyle("Style");
-                if(style == null)  {
+                if (style == null) {
                     style = pane.addStyle("Style", null);
                 }
                 StyleConstants.setForeground(style, color);
@@ -77,8 +79,6 @@ public class EtiquetaEletronicaService {
                 log.error("Ocorreu um erro ao inserir o log na tela", e);
             }
         }
-        
-        
         
     }
     
@@ -89,7 +89,6 @@ public class EtiquetaEletronicaService {
     private static final Color CLIENTE_MSG = new Color(255, 140, 0);
     private static final Color ERRO_MSG = Color.RED;
     
-    
     @Autowired
     private TabelaPrecoRepository tabelaPrecoRepository;
     @Autowired
@@ -99,12 +98,12 @@ public class EtiquetaEletronicaService {
     @Autowired
     private ProdutoRepository produtoRepository;
     
-    public Set<Long> carregaCodProdutosComAlteracaoDePrecoPeriodo(Filial filial, Regiao regiao, 
+    public Set<Long> carregaCodProdutosComAlteracaoDePrecoPeriodo(Filial filial, Regiao regiao,
             Date dataInicial, Date dataFinal) {
         
         Set<Long> codprods = new HashSet<>();
         
-        if(filial.getUtilizavendaporembalagem() != null && filial.getUtilizavendaporembalagem().equals("S")) {
+        if (filial.getUtilizavendaporembalagem() != null && filial.getUtilizavendaporembalagem().equals("S")) {
             // busca preços alterados na 2017
             
             FiltroEmbalagem filtro = FiltroEmbalagem.builder()
@@ -140,56 +139,72 @@ public class EtiquetaEletronicaService {
             
             Integer estoqueDisponivel = produtoRepository.buscaEstoqueDisponivel(p.getCodprod(), filial.getCodigo()).getEstoque();
             
-            if(!somenteEstoquePositivo || (somenteEstoquePositivo && estoqueDisponivel > 0)) {
+            if (!somenteEstoquePositivo || (somenteEstoquePositivo && estoqueDisponivel > 0)) {
                 RegistroToledo.RegistroToledoBuilder registroToledoBuilder = RegistroToledo.builder();
                 registroToledoBuilder
-                    .codBarrasPrincipal(p.getCodauxiliar())
-                    .codigo(code)
-                    .departamento(p.getDepartamento().getDescricao())
-                    .descricao(p.getDescricao())
-                    .unidade(p.getUnidade())
-                    .qtdEstoque(estoqueDisponivel);
-
-                if(filial.getUtilizavendaporembalagem() != null && filial.getUtilizavendaporembalagem().equals("S")){
+                        .codigo(code)
+                        .departamento(p.getDepartamento().getDescricao())
+                        .qtdEstoque(estoqueDisponivel);
+                
+                if (filial.getUtilizavendaporembalagem() != null && filial.getUtilizavendaporembalagem().equals("S")) {
                     // Verifica preços na tabela de embalagem (rotina 2017)
                     FiltroEmbalagem filtro = FiltroEmbalagem.builder()
                             .codfilial(filial.getCodigo())
                             .codproduto(p.getCodprod())
                             .build();
                     List<Embalagem> embalagens = embalagemRepository.findAll(EmbalagemSpec.filtro(filtro), Sort.by("qtunit"));
-                    if(embalagens != null && embalagens.size() > 0) {
+                    if (embalagens != null && embalagens.size() > 0) {
                         registros.add(registroToledoBuilder
-                            .precoItemUnitario(embalagens.get(0).getPvenda())
-                            .precoItemMaster(embalagens.get(embalagens.size() - 1).getPvenda())
-                            .precoItemUnitarioPromo(embalagens.get(0).getPvenda())
-                            .precoItemMasterPromo(embalagens.get(embalagens.size() - 1).getPvenda())
-                            .promocao(false)
-                            .build());
+                                .precoItemUnitario(embalagens.get(0).getPvenda())
+                                .precoItemMaster(embalagens.get(embalagens.size() - 1).getPvenda())
+                                .precoItemUnitarioPromo(embalagens.get(0).getPvenda())
+                                .precoItemMasterPromo(embalagens.get(embalagens.size() - 1).getPvenda())
+                                .build());
                     }
                 } else {
                     // Verifica preços na tabela pctabpr e utiliza as funçẽs nativas para buscar dados de preço e preço de atacado
-                    if(filial.getCodigo() != null && regiao.getNumregiao() != null && p.getCodauxiliar() != null) {
+                    if (filial.getCodigo() != null && regiao.getNumregiao() != null && p.getCodauxiliar() != null) {
+                        
+                        FiltroEmbalagem filtroEmbalagem = FiltroEmbalagem.builder()
+                                .codfilial(filial.getCodigo())
+                                .codproduto(p.getCodprod())
+                                .build();
+                        
+                        List<Embalagem> embalagens = embalagemRepository.findAll(EmbalagemSpec.filtro(filtroEmbalagem));
                         BuscaPreco bp = tabelaPrecoRepository.buscaPreco(filial.getCodigo(), regiao.getNumregiao(), p.getCodauxiliar());
                         ProdutoFilial pf = produtoFilialRepository.findById(new ProdutoFilialId(p.getCodprod(), filial.getCodigo())).get();
-                        //log.info(pf.toString());
-                        int qtMinAtacado = pf.getQtminimaatacado() == null ? 0 : pf.getQtminimaatacado();
-
-                        if(qtMinAtacado == 0 && p.getQtminimaatacado() != null) {
-                            qtMinAtacado = p.getQtminimaatacado();
-                        }
-
-                        registros.add(registroToledoBuilder
-                            .precoItemUnitario(bp.getPvenda())
-                            .precoItemUnitarioPromo(bp.getPvenda())
-                            .precoItemMaster(bp.getPvendaatac() * qtMinAtacado)
-                            .precoItemMasterPromo(bp.getPvendaatac() * qtMinAtacado)
-                            .promocao(false)
-                            .build());
+                        
+                        TabelaPreco tp = tabelaPrecoRepository.findById(new TabelaPrecoId(p.getCodprod(), regiao.getNumregiao())).get();
+                        
+                        embalagens.forEach(emb -> {
+                            registros.add(registroToledoBuilder
+                                    .codBarrasPrincipal(emb.getCodauxiliar())
+                                    .unidade(emb.getUnidade())
+                                    .precoItemUnitario(bp.getPvenda() * emb.getQtunit())
+                                    .precoItemUnitarioPromo(0.0)
+                                    .precoItemMaster(bp.getPvendaatac() * emb.getQtunit())
+                                    .precoItemMasterPromo(0.0)
+                                    .tipo("ATACADO")
+                                    .personalizado0(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
+                                    .personalizado1(String.valueOf(emb.getQtunit()))
+                                    .personalizado2("1") /* TO DO VERIFICAR */
+                                    .personalizado3(String.valueOf(p.getCodprod()))
+                                    .personalizado4("6") /* TO DO VERIFICAR */
+                                    .personalizado5(String.valueOf(emb.getQtunit()))
+                                    .personalizado6(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
+                                    .personalizado7("")
+                                    .personalizado8("data ult entrada")
+                                    .personalizado9("nota ultima entrada")
+                                    .personalizado10(new SimpleDateFormat("dd/MM/yyyy").format(tp.getDtultaltpvenda()))
+                                    .personalizado11("NORMAL")
+                                    .build());
+                        });
+                        
                     } else {
-                        log.warn(String.format("Não foi possível processar o produto [%d]: codigo de barras: %d", 
+                        log.warn(String.format("Não foi possível processar o produto [%d]: codigo de barras: %d",
                                 p.getCodprod(), p.getCodauxiliar()));
                     }
-
+                    
                 }
             } else {
                 logaInfo(String.format("Produto [%d] com estoque <= 0 (%d). Não será considerado", p.getCodprod(), estoqueDisponivel), logTela);
@@ -205,41 +220,39 @@ public class EtiquetaEletronicaService {
             String prefix = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
             // Verifica a existência dos repositórios
-
             File diri1 = new File(repositorioArquivo + "/DataFiles");
             File dirm1 = new File(repositorioArquivo + "/MessageFiles");
             File dirr7 = new File(repositorioArquivo + "/ResultFiles");
 
             // Se não exist, cria
-            if(!diri1.exists()) {
+            if (!diri1.exists()) {
                 diri1.mkdir();
             }
-
-            if(!dirm1.exists()) {
+            
+            if (!dirm1.exists()) {
                 dirm1.mkdir();
             }
             
-            if(!dirr7.exists()) {
+            if (!dirr7.exists()) {
                 dirr7.mkdir();
             }
 
             // Criando os aquivos de mensagem (m1) e dados (i1)
-
             File i1 = new File(diri1.getAbsolutePath() + "/" + prefix + ".i1");
             File m1 = new File(dirm1.getAbsolutePath() + "/" + prefix + ".m1");
 
             // Gera arquivo de mensagens
             FileWriter writer = new FileWriter(m1);
             PrintWriter printWriter = new PrintWriter(writer);
-            printWriter.println("UPDATE," + code + ",," + i1.getAbsolutePath() + "," + dirr7.getAbsolutePath() + "/" + prefix + ".r7" );
+            printWriter.println("UPDATE," + code + ",," + i1.getAbsolutePath() + "," + dirr7.getAbsolutePath() + "/" + prefix + ".r7");
             printWriter.flush();
             printWriter.close();
-            
+
             //Gera aquivo de dados
             writer = new FileWriter(i1);
             printWriter = new PrintWriter(writer);
-
-            for(RegistroToledo r : registros) {
+            
+            for (RegistroToledo r : registros) {
                 printWriter.println(r);
             }
             printWriter.flush();
@@ -250,13 +263,13 @@ public class EtiquetaEletronicaService {
             logaErro(e.getMessage(), logTela);
         }
     }
-
+    
     public void loga(Color color, String mensagem, JTextPane pane) {
         
         try {
             StyledDocument doc = pane.getStyledDocument();
             Style style = pane.getStyle("Style");
-            if(style == null)  {
+            if (style == null) {
                 style = pane.addStyle("Style", null);
             }
             StyleConstants.setForeground(style, color);
@@ -267,7 +280,7 @@ public class EtiquetaEletronicaService {
         }
         
     }
-        
+    
     public void logaInfo(String mensage, JTextPane pane) {
         loga(MINHA_MSG, mensage, pane);
     }
