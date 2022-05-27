@@ -45,5 +45,6 @@ public class Embalagem {
     private Double pvendaatac;
     private Date dtultaltpvenda;
     private Date dtinativo;
+    private String descricaoecf;
     
 }

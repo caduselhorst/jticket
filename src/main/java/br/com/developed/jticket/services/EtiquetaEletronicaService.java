@@ -143,7 +143,6 @@ public class EtiquetaEletronicaService {
                 RegistroToledo.RegistroToledoBuilder registroToledoBuilder = RegistroToledo.builder();
                 registroToledoBuilder
                         .codigo(code)
-                        .descricao(p.getDescricao())
                         .departamento(p.getDepartamento().getDescricao())
                         .qtdEstoque(estoqueDisponivel);
                 
@@ -180,6 +179,7 @@ public class EtiquetaEletronicaService {
                         embalagens.forEach(emb -> {
                             registros.add(registroToledoBuilder
                                     .codBarrasPrincipal(emb.getCodauxiliar())
+                                    .descricao(emb.getDescricaoecf() != null ? emb.getDescricaoecf() : p.getDescricao())
                                     .unidade(emb.getUnidade())
                                     .precoItemUnitario(bp.getPvenda() * emb.getQtunit())
                                     .precoItemUnitarioPromo(0.0)
