@@ -15,5 +15,5 @@ import lombok.Setter;
  */
 
 public interface EstoqueDisponivel {
-    Integer getEstoque();
+    Double getEstoque();
 }

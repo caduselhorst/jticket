@@ -38,7 +38,7 @@ public class RegistroToledo {
     private Double precoItemMasterPromo;
     private String departamento;
     private String unidade;
-    private Integer qtdEstoque;
+    private Double qtdEstoque;
     private String tipo;
     private String personalizado0;
     private String personalizado1;
@@ -82,20 +82,20 @@ public class RegistroToledo {
                 "46 0 |" + String.format("%.2f", precoItemMasterPromo).replace(",", "") + "|",
                 "5 0 |" + departamento + "|",
                 "70 0 |" + unidade + "|",
-                "50 0 |" + qtdEstoque + "|",
+                "50 0 |" + String.format("%.2f", qtdEstoque).replace(",", "") + "|",
                 "121 0 |" + tipo + "|",
                 "200 0 |" + personalizado0 + "|", 
-                "201 0 |" + personalizado0 + "|", 
-                "202 0 |" + personalizado0 + "|", 
-                "203 0 |" + personalizado0 + "|", 
-                "204 0 |" + personalizado0 + "|", 
-                "205 0 |" + personalizado0 + "|", 
-                "206 0 |" + personalizado0 + "|", 
-                "207 0 |" + personalizado0 + "|", 
-                "208 0 |" + personalizado0 + "|", 
-                "209 0 |" + personalizado0 + "|", 
-                "210 0 |" + personalizado0 + "|", 
-                "211 0 |" + personalizado0 + "|" 
+                "201 0 |" + personalizado1 + "|", 
+                "202 0 |" + personalizado2 + "|", 
+                "203 0 |" + personalizado3 + "|", 
+                "204 0 |" + personalizado4 + "|", 
+                "205 0 |" + personalizado5 + "|", 
+                "206 0 |" + personalizado6 + "|", 
+                "207 0 |" + personalizado7 + "|", 
+                "208 0 |" + personalizado8 + "|", 
+                "209 0 |" + personalizado9 + "|", 
+                "210 0 |" + personalizado10 + "|", 
+                "211 0 |" + personalizado11 + "|" 
                 );
                 
         return retorno;
