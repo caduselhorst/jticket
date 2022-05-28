@@ -189,7 +189,7 @@ public class EtiquetaEletronicaService {
                             registros.add(registroToledoBuilder
                                     .codBarrasPrincipal(emb.getCodauxiliar())
                                     .descricao(emb.getDescricaoecf() != null ? emb.getDescricaoecf() : p.getDescricao())
-                                    .unidade(emb.getUnidade())
+                                    .unidade(emb.getEmbalagem().substring(0, 2))
                                     .precoItemUnitario(bp.getPvenda() * emb.getQtunit())
                                     .precoItemUnitarioPromo((precoPromo != null && precoPromo.getPrecofixo() != 0.0) ? (precoPromo.getPrecofixo() * emb.getQtunit()) : 0.0)
                                     .precoItemMaster(bp.getPvendaatac() * emb.getQtunit())
@@ -200,7 +200,7 @@ public class EtiquetaEletronicaService {
                                     .personalizado2(String.valueOf(p.getDepartamento().getCodepto()))
                                     .personalizado3(String.valueOf(p.getCodprod()))
                                     .personalizado4(String.valueOf(qtminimaatacadopf != 0 ? qtminimaatacadopf : qtminimaatacado))
-                                    .personalizado5(String.valueOf(emb.getQtunit()))
+                                    .personalizado5(String.valueOf(p.getQtunitcx()))
                                     .personalizado6(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
                                     .personalizado7("")
                                     .personalizado8(new SimpleDateFormat("dd/MM/yyyy").format(ultimaEntrada.getDtultent()))
