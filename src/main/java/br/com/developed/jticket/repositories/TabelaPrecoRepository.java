@@ -63,7 +63,7 @@ public interface TabelaPrecoRepository extends JpaRepository<TabelaPreco,TabelaP
                                         "AND PCPRECOPROM.CODREDE = PCREDECLIENTE.CODREDE(+) " +
                                         "AND PCPRODUT.CODFORNEC = PCFORNEC.CODFORNEC " +
                                         "AND TRUNC(SYSDATE) BETWEEN PCPRECOPROM.DTINICIOVIGENCIA AND PCPRECOPROM.DTFIMVIGENCIA " +
-                                        "AND PCPRECOPROM.NUMREGIAO = :numregicao " +
+                                        "AND PCPRECOPROM.NUMREGIAO = :numregiao " +
                                         "AND PCPRODUT.CODPROD=:codprod " +
                                     "ORDER BY PCPRODUT.DESCRICAO")
     public PrecoPromocional buscaPrecosPromocionais(
