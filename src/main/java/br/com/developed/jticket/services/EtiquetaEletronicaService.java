@@ -217,7 +217,7 @@ public class EtiquetaEletronicaService {
                     
                 }
             } else {
-                logaInfo(String.format("Produto [%d] com estoque <= 0 (%d). Não será considerado", p.getCodprod(), estoqueDisponivel), logTela);
+                logaInfo(String.format("Produto [%d] com estoque <= 0 (%.2f). Não será considerado", p.getCodprod(), estoqueDisponivel), logTela);
             }
         });
         

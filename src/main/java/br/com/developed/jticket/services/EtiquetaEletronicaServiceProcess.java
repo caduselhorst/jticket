@@ -90,7 +90,12 @@ public class EtiquetaEletronicaServiceProcess extends Thread {
             eService.logaInfo("Produtos carregados", jTextPane1);
             
         }
-        eService.geraEtiquetasEletronicas(filial, regiao, produtosFiltrados, jTextPane1, somenteEstoquePositivo, repositorioArquivos);
+        if(produtosFiltrados != null && produtosFiltrados.size() > 0) {
+            eService.geraEtiquetasEletronicas(filial, regiao, produtosFiltrados, jTextPane1, somenteEstoquePositivo, repositorioArquivos);
+        } else {
+            eService.logaInfo("Não foram encontrados produtos com os critérios informados", jTextPane1);
+        }
+        
         eService.logaInfo("Processo finalizado", jTextPane1);
         
     }
