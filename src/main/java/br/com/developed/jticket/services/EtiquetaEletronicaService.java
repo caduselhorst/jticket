@@ -15,8 +15,10 @@ import br.com.developed.jticket.entities.TabelaPrecoId;
 import br.com.developed.jticket.models.BuscaPreco;
 import br.com.developed.jticket.models.FiltroEmbalagem;
 import br.com.developed.jticket.models.FiltroTabelaPreco;
+import br.com.developed.jticket.models.PrecoPromocional;
 import br.com.developed.jticket.models.RegistroToledo;
 import br.com.developed.jticket.repositories.EmbalagemRepository;
+import br.com.developed.jticket.repositories.InfoUltimaEntrada;
 import br.com.developed.jticket.repositories.ProdutoFilialRepository;
 import br.com.developed.jticket.repositories.ProdutoRepository;
 import br.com.developed.jticket.repositories.TabelaPrecoRepository;
@@ -137,7 +139,11 @@ public class EtiquetaEletronicaService {
         
         produtos.forEach(p -> {
             
-            Double estoqueDisponivel = produtoRepository.buscaEstoqueDisponivel(p.getCodprod(), filial.getCodigo()).getEstoque();
+            Double estoqueDisponivel = produtoRepository.buscaEstoqueDisponivel(
+                    p.getCodprod(), filial.getCodigo()).getEstoque();
+            PrecoPromocional precoPromo = tabelaPrecoRepository.buscaPrecosPromocionais(
+                    p.getCodprod(), regiao.getNumregiao());
+            InfoUltimaEntrada ultimaEntrada = produtoRepository.buscaInfoUltimaEntrada(p.getCodprod(), filial.getCodigo());
             
             if (!somenteEstoquePositivo || (somenteEstoquePositivo && estoqueDisponivel > 0)) {
                 RegistroToledo.RegistroToledoBuilder registroToledoBuilder = RegistroToledo.builder();
@@ -176,28 +182,31 @@ public class EtiquetaEletronicaService {
                         
                         TabelaPreco tp = tabelaPrecoRepository.findById(new TabelaPrecoId(p.getCodprod(), regiao.getNumregiao())).get();
                         
+                        final int qtminimaatacadopf = pf.getQtminimaatacado();
+                        final int qtminimaatacado = p.getQtminimaatacado();
+                        
                         embalagens.forEach(emb -> {
                             registros.add(registroToledoBuilder
                                     .codBarrasPrincipal(emb.getCodauxiliar())
                                     .descricao(emb.getDescricaoecf() != null ? emb.getDescricaoecf() : p.getDescricao())
                                     .unidade(emb.getUnidade())
                                     .precoItemUnitario(bp.getPvenda() * emb.getQtunit())
-                                    .precoItemUnitarioPromo(0.0)
+                                    .precoItemUnitarioPromo((precoPromo != null && precoPromo.getPrecofixo() != 0.0) ? (precoPromo.getPrecofixo() * emb.getQtunit()) : 0.0)
                                     .precoItemMaster(bp.getPvendaatac() * emb.getQtunit())
-                                    .precoItemMasterPromo(0.0)
-                                    .tipo("ATACADO")
+                                    .precoItemMasterPromo((precoPromo != null && precoPromo.getPrecofixo() != 0.0) ? (precoPromo.getPrecofixo() * emb.getQtunit()) : 0.0)
+                                    .tipo(bp.getPvenda() != bp.getPvendaatac() ? "ATACADO" : "NORMAL")
                                     .personalizado0(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
                                     .personalizado1(String.valueOf(p.getQtunitcx()))
-                                    .personalizado2("1") /* TO DO VERIFICAR */
+                                    .personalizado2(String.valueOf(emb.getQtunit()))
                                     .personalizado3(String.valueOf(p.getCodprod()))
-                                    .personalizado4("6") /* TO DO VERIFICAR */
+                                    .personalizado4(String.valueOf(qtminimaatacadopf != 0 ? qtminimaatacadopf : qtminimaatacado))
                                     .personalizado5(String.valueOf(emb.getQtunit()))
                                     .personalizado6(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
                                     .personalizado7("")
-                                    .personalizado8("data ult entrada")
-                                    .personalizado9("nota ultima entrada")
+                                    .personalizado8(new SimpleDateFormat("dd/MM/yyyy").format(ultimaEntrada.getDtultent()))
+                                    .personalizado9(String.valueOf(ultimaEntrada.getNumnotaultent()))
                                     .personalizado10(new SimpleDateFormat("dd/MM/yyyy").format(tp.getDtultaltpvenda()))
-                                    .personalizado11("NORMAL")
+                                    .personalizado11((precoPromo != null && precoPromo.getPrecofixo() != 0.0) ? "PROMO" : "NORMAL")
                                     .build());
                         });
                         

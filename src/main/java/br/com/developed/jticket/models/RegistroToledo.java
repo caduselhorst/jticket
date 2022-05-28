@@ -56,7 +56,7 @@ public class RegistroToledo {
     
     @Override
     public String toString() {
-        String linha = "%d %d%s%s%s%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s";
+        String linha = "%d %d%s%s%s%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s,";
         
         String codBarrasAux = " ";
         String dtAlteracao = " ";
