@@ -197,7 +197,7 @@ public class EtiquetaEletronicaService {
                                     .tipo(bp.getPvenda() != bp.getPvendaatac() ? "ATACADO" : "NORMAL")
                                     .personalizado0(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
                                     .personalizado1(String.valueOf(p.getQtunitcx()))
-                                    .personalizado2(String.valueOf(emb.getQtunit()))
+                                    .personalizado2(String.valueOf(p.getDepartamento().getCodepto()))
                                     .personalizado3(String.valueOf(p.getCodprod()))
                                     .personalizado4(String.valueOf(qtminimaatacadopf != 0 ? qtminimaatacadopf : qtminimaatacado))
                                     .personalizado5(String.valueOf(emb.getQtunit()))
