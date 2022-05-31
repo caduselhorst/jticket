@@ -6,6 +6,7 @@ package br.com.developed.jticket.forms;
 
 import br.com.developed.jticket.components.ComboBoxHoraMinutoModel;
 import br.com.developed.jticket.components.HoraMaskFormatter;
+import br.com.developed.jticket.models.PreferenciasAgendamento;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
@@ -27,6 +28,30 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         configuraSairESC();
+    }
+    
+    private void carregaAgendamentoProcesso() {
+        PreferenciasAgendamento pa = new PreferenciasAgendamento();
+        
+        pa = pa.carregarPreferencias();
+        
+        if(pa != null) {
+            jCheckBox1.setSelected(pa.isDomingo());
+            jCheckBox2.setSelected(pa.isSegunda());
+            jCheckBox3.setSelected(pa.isTerca());
+            jCheckBox4.setSelected(pa.isQuarta());
+            jCheckBox5.setSelected(pa.isQuinta());
+            jCheckBox6.setSelected(pa.isSexta());
+            jCheckBox7.setSelected(pa.isSabado());
+            
+            jCheckBox8.setSelected(pa.isSomenteUmaVez());
+            jFormattedTextField1.setText(pa.getHora());
+            
+            jCheckBox9.setSelected(pa.isACada());
+            jComboBox1.setSelectedIndex(pa.getIndexHoraMinuto());
+            jSpinner1.setValue(pa.getIndexHoraMinuto());
+            jFormattedTextField2.setText(pa.getApartirDe());
+        }
     }
     
     public void configuraSairESC() {
@@ -200,6 +225,11 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
 
         jButton1.setMnemonic('G');
         jButton1.setText("Gravar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setMnemonic('C');
         jButton2.setText("Cancelar");
@@ -252,6 +282,27 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        PreferenciasAgendamento pa = PreferenciasAgendamento.builder()
+                .domingo(jCheckBox1.isSelected())
+                .segunda(jCheckBox2.isSelected())
+                .terca(jCheckBox3.isSelected())
+                .quarta(jCheckBox4.isSelected())
+                .quinta(jCheckBox5.isSelected())
+                .sexta(jCheckBox6.isSelected())
+                .sabado(jCheckBox7.isSelected())
+                .somenteUmaVez(jCheckBox8.isSelected())
+                .hora(jFormattedTextField1.getText())
+                .aCada(jCheckBox9.isSelected())
+                .quantidade((Integer)jSpinner1.getValue())
+                .indexHoraMinuto(jComboBox1.getSelectedIndex())
+                .apartirDe(jFormattedTextField2.getText())
+                .build();
+        
+        pa.salvarPreferencias();
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

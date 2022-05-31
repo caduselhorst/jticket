@@ -4,14 +4,6 @@
  */
 package br.com.developed.jticket.models;
 
-import br.com.developed.jticket.entities.Categoria;
-import br.com.developed.jticket.entities.Departamento;
-import br.com.developed.jticket.entities.Filial;
-import br.com.developed.jticket.entities.Fornecedor;
-import br.com.developed.jticket.entities.Produto;
-import br.com.developed.jticket.entities.Regiao;
-import br.com.developed.jticket.entities.Secao;
-import br.com.developed.jticket.entities.SubCategoria;
 import br.com.developed.jticket.exceptions.NegocioException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +12,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,24 +27,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Preferencias implements Serializable {
+public class PreferenciasAgendamento implements Serializable {
     
-    private Filial filial;
-    private List<Departamento> departamentos;
-    private List<Secao> secoes;
-    private List<Categoria> categorias;
-    private List<SubCategoria> subCategorias;
-    private Fornecedor fornecedor;
-    private Regiao regiao;
-    private List<Produto> produtos;
-    private boolean somenteEstoquePositivo;
-    private String caminhoRepositorioArquivos;
-    private boolean filtrarPorDataAlteracaoPreco;
-    private boolean processoAgendado;
+    private boolean domingo;
+    private boolean segunda;
+    private boolean terca;
+    private boolean quarta;
+    private boolean quinta;
+    private boolean sexta;
+    private boolean sabado;
+    
+    private boolean somenteUmaVez;
+    private String hora;
+    private boolean aCada;
+    private Integer indexHoraMinuto;
+    private Integer quantidade;
+    private String apartirDe;
     
     public void salvarPreferencias() {
         try {
-            FileOutputStream out = new FileOutputStream("preferencias.ser");
+            FileOutputStream out = new FileOutputStream("preferenciasAgendamento.ser");
             ObjectOutputStream oos = new ObjectOutputStream(out);
             oos.writeObject(this);
             oos.close();
@@ -63,15 +56,15 @@ public class Preferencias implements Serializable {
         }
     }
     
-    public Preferencias carregarPreferencias() {
+    public PreferenciasAgendamento carregarPreferencias() {
         try {
-            File f = new File("preferencias.ser");
+            File f = new File("preferenciasAgendamento.ser");
             if(!f.exists()) {
                 return null;
             }
             FileInputStream in = new FileInputStream(f);
             ObjectInputStream ois = new ObjectInputStream(in);
-            Preferencias p = (Preferencias) ois.readObject();
+            PreferenciasAgendamento p = (PreferenciasAgendamento) ois.readObject();
             ois.close();
             in.close();
 
@@ -80,4 +73,5 @@ public class Preferencias implements Serializable {
             throw new NegocioException("Ocorreu um erro ao carregar as preferências", e);
         }
     }
+    
 }

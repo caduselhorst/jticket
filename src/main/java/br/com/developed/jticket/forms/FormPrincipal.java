@@ -1008,6 +1008,8 @@ public class FormPrincipal extends javax.swing.JFrame {
                 .secoes(secoes)
                 .somenteEstoquePositivo(jCheckBoxEstoquePositivo.isSelected())
                 .subCategorias(subCategorias)
+                .processoAgendado(jCheckBox1.isSelected())
+                .filtrarPorDataAlteracaoPreco(jCheckBoxFiltroDataPrecoAlterado.isSelected())
                 .build();
         try {
             prefs.salvarPreferencias();
