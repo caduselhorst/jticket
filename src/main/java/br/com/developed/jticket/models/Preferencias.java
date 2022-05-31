@@ -48,6 +48,7 @@ public class Preferencias implements Serializable {
     private List<Produto> produtos;
     private boolean somenteEstoquePositivo;
     private String caminhoRepositorioArquivos;
+    private boolean processoAgendado;
     
     public void salvarPreferencias() {
         try {
