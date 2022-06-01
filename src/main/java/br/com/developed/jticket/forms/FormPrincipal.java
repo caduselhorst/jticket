@@ -17,6 +17,8 @@ import br.com.developed.jticket.entities.Regiao;
 import br.com.developed.jticket.entities.Secao;
 import br.com.developed.jticket.entities.SubCategoria;
 import br.com.developed.jticket.models.Preferencias;
+import br.com.developed.jticket.models.PreferenciasAgendamento;
+import br.com.developed.jticket.services.AgendamentoEtiquetaEletronicaService;
 import br.com.developed.jticket.services.EtiquetaEletronicaServiceProcess;
 import br.com.developed.jticket.services.FilialService;
 import br.com.developed.jticket.services.FormularioPrincipalService;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -62,6 +65,8 @@ public class FormPrincipal extends javax.swing.JFrame {
         verificaTipoPreço();
                 
         carregaPreferencias();
+        
+        
 
     }
         
@@ -71,7 +76,9 @@ public class FormPrincipal extends javax.swing.JFrame {
         
         meurootpane.getRootPane().getActionMap().put("ESCAPE", new AbstractAction("ESCAPE") {
             public void actionPerformed(ActionEvent e) {
-                jButtonSairActionPerformed(e);
+                if(agendamentoService == null || !agendamentoService.isAlive()) {
+                    jButtonSairActionPerformed(e);
+                }
             }
         });
         
@@ -166,6 +173,14 @@ public class FormPrincipal extends javax.swing.JFrame {
             jButtonProcessar.setEnabled(true);
         }
         
+        
+        preferenciasAgendamento = new PreferenciasAgendamento().carregarPreferencias();
+        
+        if(preferenciasAgendamento == null) {
+            jLabel11.setText("Parâmetros para processamento automático não configurados");
+        } else {
+            jLabel11.setText("Parâmetros para processamento automático configurados");
+        }
             
     }
         
@@ -227,6 +242,44 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         }
     }
+    
+    private void habilitaDesabilitaCampoProcessamentoAutomatico() {
+        jTextFieldFilial.setEnabled(!jTextFieldFilial.isEnabled());
+        jTextFieldArea.setEnabled(!jTextFieldArea.isEnabled());
+        jTextFieldDepartamento.setEnabled(!jTextFieldDepartamento.isEnabled());
+        jTextFieldSecao.setEnabled(!jTextFieldSecao.isEnabled());
+        jTextFieldProduto.setEnabled(!jTextFieldProduto.isEnabled());
+        jTextFieldFornecedor.setEnabled(!jTextFieldFornecedor.isEnabled());
+        
+        jButtonPesquisaFilial.setEnabled(!jButtonPesquisaFilial.isEnabled());
+        jButtonPesquisaRegiao.setEnabled(!jButtonPesquisaRegiao.isEnabled());
+        jButtonPesquisaDepartamento.setEnabled(!jButtonPesquisaDepartamento.isEnabled());
+        jButtonPesquisaSecao.setEnabled(!jButtonPesquisaSecao.isEnabled());
+        jButtonPesquisaCategoria.setEnabled(!jButtonPesquisaCategoria.isEnabled());
+        jButtonPesquisaSubCategoria.setEnabled(!jButtonPesquisaSubCategoria.isEnabled());
+        jButtonPesquisaProduto.setEnabled(!jButtonPesquisaProduto.isEnabled());
+        jButtonPesquisaFornecedor.setEnabled(!jButtonPesquisaFornecedor.isEnabled());
+        
+        jCheckBoxEstoquePositivo.setEnabled(!jCheckBoxEstoquePositivo.isEnabled());
+        jCheckBoxFiltroDataPrecoAlterado.setEnabled(!jCheckBoxFiltroDataPrecoAlterado.isEnabled());
+        
+        jButtonProcessar.setEnabled(!jButtonProcessar.isEnabled());
+        jButtonLimpar.setEnabled(!jButtonLimpar.isEnabled());
+        
+        jButtonLimpar1.setEnabled(!jButtonLimpar1.isEnabled());
+        
+        jButtonSair.setEnabled(!jButtonSair.isEnabled());
+        
+        jButton1.setEnabled(!jButton1.isEnabled());
+        jButton2.setEnabled(!jButton2.isEnabled());
+        
+        jTextField2.setEnabled(!jTextField2.isEnabled());
+        jTextField3.setEnabled(!jTextField3.isEnabled());
+        jTextField4.setEnabled(!jTextField4.isEnabled());
+        jTextField5.setEnabled(!jTextField5.isEnabled());
+        jTextField8.setEnabled(!jTextField8.isEnabled());
+        jTextField9.setEnabled(!jTextField9.isEnabled());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -281,6 +334,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jTextField9 = new javax.swing.JTextField();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jButtonSair = new javax.swing.JButton();
@@ -578,6 +632,11 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
 
         jCheckBox1.setText("Processamento automático");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Configurar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -585,6 +644,9 @@ public class FormPrincipal extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        jLabel11.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel11.setText("jLabel11");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -664,7 +726,8 @@ public class FormPrincipal extends javax.swing.JFrame {
                                 .addComponent(jCheckBox1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -735,7 +798,9 @@ public class FormPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBox1)
                     .addComponent(jButton2))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -773,6 +838,8 @@ public class FormPrincipal extends javax.swing.JFrame {
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jTextField1.setEditable(false);
 
         jButton1.setText("...");
         jButton1.setToolTipText("");
@@ -1279,6 +1346,35 @@ public class FormPrincipal extends javax.swing.JFrame {
         f.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        
+        if(((JCheckBox) evt.getSource()).isSelected()) {
+            
+            preferenciasAgendamento = new PreferenciasAgendamento().carregarPreferencias();
+            
+            if(preferenciasAgendamento != null) {
+                agendamentoService = new AgendamentoEtiquetaEletronicaService(filial, departamentos, secoes, categorias, 
+                        subCategorias, fornecedor, regiao, produtos, ctx, dateChooserCombo3, dateChooserCombo4, 
+                        jTextPane1, jCheckBoxFiltroDataPrecoAlterado, rootPaneCheckingEnabled, jTextField1.getText(), 
+                        preferenciasAgendamento, jLabel11);
+                agendamentoService.start();
+                habilitaDesabilitaCampoProcessamentoAutomatico();
+            } else {
+                JOptionPane.showMessageDialog(this, "É necessário realizar a configuração do agendamento", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                ((JCheckBox) evt.getSource()).setSelected(false);
+                jButton2ActionPerformed(evt);
+            }
+        } else {
+            if(agendamentoService != null && agendamentoService.isAlive()) {
+                agendamentoService.parar();
+                jLabel11.setText("Finalizando processo");
+                habilitaDesabilitaCampoProcessamentoAutomatico();
+                jLabel11.setText("Parâmetros para processamento automático configurados.");
+            }
+        }
+        
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
     private void focoProximoComponente(int keyCode, Component proximo) {
         if(keyCode == KeyEvent.VK_ENTER) {
             if(proximo == null) {
@@ -1319,6 +1415,10 @@ public class FormPrincipal extends javax.swing.JFrame {
     private FormularioPrincipalService formService;
     private final ApplicationContext ctx;
     
+    private PreferenciasAgendamento preferenciasAgendamento;
+    
+    private AgendamentoEtiquetaEletronicaService agendamentoService;
+    
     private final KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1344,6 +1444,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxFiltroDataPrecoAlterado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

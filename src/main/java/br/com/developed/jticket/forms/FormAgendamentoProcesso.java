@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultFormatterFactory;
@@ -37,20 +38,13 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
         pa = pa.carregarPreferencias();
         
         if(pa != null) {
-            jCheckBox1.setSelected(pa.isDomingo());
-            jCheckBox2.setSelected(pa.isSegunda());
-            jCheckBox3.setSelected(pa.isTerca());
-            jCheckBox4.setSelected(pa.isQuarta());
-            jCheckBox5.setSelected(pa.isQuinta());
-            jCheckBox6.setSelected(pa.isSexta());
-            jCheckBox7.setSelected(pa.isSabado());
             
-            jCheckBox8.setSelected(pa.isSomenteUmaVez());
+            jCheckBox8.setSelected(pa.isDiariamente());
             jFormattedTextField1.setText(pa.getHora());
             
             jCheckBox9.setSelected(pa.isACada());
             jComboBox1.setSelectedIndex(pa.getIndexHoraMinuto());
-            jSpinner1.setValue(pa.getIndexHoraMinuto());
+            jSpinner1.getModel().setValue(pa.getQuantidade());
             jFormattedTextField2.setText(pa.getApartirDe());
         }
     }
@@ -77,14 +71,6 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         jCheckBox8 = new javax.swing.JCheckBox();
         jCheckBox9 = new javax.swing.JCheckBox();
@@ -102,60 +88,9 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Dia da semana"));
-
-        jCheckBox1.setText("Domingo");
-
-        jCheckBox2.setText("Segunda-feira");
-
-        jCheckBox3.setText("Terça-feira");
-
-        jCheckBox4.setText("Quarta-feira");
-
-        jCheckBox5.setText("Quinta-feira");
-
-        jCheckBox6.setText("Sexta-feira");
-
-        jCheckBox7.setText("Sabado");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jCheckBox7))
-                .addGap(0, 74, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Peridiocidade"));
 
-        jCheckBox8.setText("Somente uma vez");
+        jCheckBox8.setText("Diariamente");
 
         jCheckBox9.setText("A cada");
 
@@ -188,7 +123,7 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,15 +146,13 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -249,7 +182,7 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(232, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,37 +218,38 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        PreferenciasAgendamento pa = PreferenciasAgendamento.builder()
-                .domingo(jCheckBox1.isSelected())
-                .segunda(jCheckBox2.isSelected())
-                .terca(jCheckBox3.isSelected())
-                .quarta(jCheckBox4.isSelected())
-                .quinta(jCheckBox5.isSelected())
-                .sexta(jCheckBox6.isSelected())
-                .sabado(jCheckBox7.isSelected())
-                .somenteUmaVez(jCheckBox8.isSelected())
-                .hora(jFormattedTextField1.getText())
-                .aCada(jCheckBox9.isSelected())
-                .quantidade((Integer)jSpinner1.getValue())
-                .indexHoraMinuto(jComboBox1.getSelectedIndex())
-                .apartirDe(jFormattedTextField2.getText())
-                .build();
-        
-        pa.salvarPreferencias();
-        dispose();
+        if(!jCheckBox8.isSelected() && !jCheckBox9.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Selecione uma opção", "Informação", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if(jCheckBox8.isSelected() && jFormattedTextField1.getText().equals("  :  :  ")) {
+                JOptionPane.showMessageDialog(this, "Informe um horário para a execução", "Informação", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            if(jCheckBox9.isSelected() && ((Integer)jSpinner1.getModel().getValue()).equals(0) 
+                    && jFormattedTextField2.getText().equals("  :  :  ")) {
+                JOptionPane.showMessageDialog(this, "Informe os parâmetros para a execução", "Informação", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            PreferenciasAgendamento pa = PreferenciasAgendamento.builder()
+                    .diariamente(jCheckBox8.isSelected())
+                    .hora(jFormattedTextField1.getText())
+                    .aCada(jCheckBox9.isSelected())
+                    .quantidade((Integer)jSpinner1.getModel().getValue())
+                    .indexHoraMinuto(jComboBox1.getSelectedIndex())
+                    .apartirDe(jFormattedTextField2.getText())
+                    .build();
+
+            pa.salvarPreferencias();
+            dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -324,7 +258,6 @@ public class FormAgendamentoProcesso extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSpinner jSpinner1;
     // End of variables declaration//GEN-END:variables

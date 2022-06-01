@@ -14,7 +14,7 @@
     <name>jticket</name>
     <description></description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>13</java.version>
         <mainClass>br.com.developed.jticket.JticketApplication</mainClass>
     </properties>
     <dependencies>
