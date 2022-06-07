@@ -16,9 +16,11 @@ import br.com.developed.jticket.models.FiltroProduto;
 import br.com.developed.jticket.utils.LogTelaUtils;
 import datechooser.beans.DateChooserCombo;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.JCheckBox;
 import javax.swing.JTextPane;
 import lombok.AllArgsConstructor;
@@ -55,45 +57,75 @@ public class EtiquetaEletronicaServiceProcess extends Thread {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         ProdutoService produtoService = ctx.getBean(ProdutoService.class);
         EtiquetaEletronicaService eService = ctx.getBean(EtiquetaEletronicaService.class);
-        String strDtInicio = sdf.format(new Date(dateChooserCombo3.getCurrent().getTimeInMillis()));
-        String strDtFim = sdf.format(new Date(dateChooserCombo4.getCurrent().getTimeInMillis()));
+        
+        Calendar cInicio = dateChooserCombo3.getCurrent();
+        cInicio.set(Calendar.HOUR_OF_DAY, 0);
+        cInicio.set(Calendar.MINUTE, 0);
+        cInicio.set(Calendar.SECOND, 0);
+        cInicio.set(Calendar.MILLISECOND, 0);
+        Calendar cFim = dateChooserCombo4.getCurrent();
+        cFim.set(Calendar.HOUR_OF_DAY, 0);
+        cFim.set(Calendar.MINUTE, 0);
+        cFim.set(Calendar.SECOND, 0);
+        cFim.set(Calendar.MILLISECOND, 0);
+        
+        String strDtInicio = sdf.format(new Date(cInicio.getTimeInMillis()));
+        String strDtFim = sdf.format(new Date(cFim.getTimeInMillis()));
         
         eService.logaInfo("Iniciando processo", jTextPane1);
         
-        List<Produto> produtosFiltrados;
+        List<Produto> produtosFiltrados = null;
+        List<Produto> produtosPrecosAlterados = null;
         
-        if (jCheckBoxFiltroDataPrecoAlterado.isSelected()) {
+        
+        eService.logaInfo("Carregando produtos", jTextPane1);
+        FiltroProduto filtro = FiltroProduto.builder()
+                .categorias(categorias)
+                .departamentos(departamentos)
+                .fornecedor(fornecedor)
+                .produtos(produtos)
+                .secoes(secoes)
+                .subcategorias(subCategorias)
+                .build();
+
+
+        produtosFiltrados = produtoService.carregaProdutos(filtro);
+        
+        if (jCheckBoxFiltroDataPrecoAlterado.isSelected() && produtosFiltrados != null && produtosFiltrados.size() > 0) {
             LogTelaUtils.logaInfo(
                     String.format("Verificando produtos com alteração de preço entre %s e %s", strDtInicio, strDtFim), jTextPane1);
             eService = ctx.getBean(EtiquetaEletronicaService.class);
+            
+            List<Long> cods = produtosFiltrados.stream().map(p -> p.getCodprod()).collect(Collectors.toList());
 
             Set<Long> codprods = eService.carregaCodProdutosComAlteracaoDePrecoPeriodo(filial, regiao,
-                    new Date(dateChooserCombo3.getCurrent().getTimeInMillis()), new Date(dateChooserCombo4.getCurrent().getTimeInMillis()));
-            FiltroProduto filtro = FiltroProduto.builder()
+                    new Date(cInicio.getTimeInMillis()), new Date(cFim.getTimeInMillis()), cods);
+            
+            
+            if(codprods != null && codprods.size() > 0) {
+                FiltroProduto filtroPreco = FiltroProduto.builder()
                     .codigos(codprods)
                     .build();
-            produtosFiltrados = produtoService.carregaProdutos(filtro);
-            eService.logaInfo("Produtos carregados", jTextPane1);
-        } else {
-            eService.logaInfo("Carregando produtos", jTextPane1);
-            FiltroProduto filtro = FiltroProduto.builder()
-                    .categorias(categorias)
-                    .departamentos(departamentos)
-                    .fornecedor(fornecedor)
-                    .produtos(produtos)
-                    .secoes(secoes)
-                    .subcategorias(subCategorias)
-                    .build();
-
-            
-            produtosFiltrados = produtoService.carregaProdutos(filtro);
-            eService.logaInfo("Produtos carregados", jTextPane1);
-            
+                produtosPrecosAlterados = produtoService.carregaProdutos(filtroPreco);
+                
+            }
+                
         }
-        if(produtosFiltrados != null && produtosFiltrados.size() > 0) {
-            eService.geraEtiquetasEletronicas(filial, regiao, produtosFiltrados, jTextPane1, somenteEstoquePositivo, repositorioArquivos);
+        
+        if (jCheckBoxFiltroDataPrecoAlterado.isSelected()) {
+            if(produtosPrecosAlterados != null && produtosPrecosAlterados.size() > 0) {
+                LogTelaUtils.logaInfo(String.format("Carregados [%d] produtos com preços alterados.", produtosPrecosAlterados.size()), jTextPane1);
+                eService.geraEtiquetasEletronicas(filial, regiao, produtosPrecosAlterados, jTextPane1, somenteEstoquePositivo, repositorioArquivos);
+            } else {
+                eService.logaInfo("Não foram encontrados produtos com os critérios informados", jTextPane1);
+            }
         } else {
-            eService.logaInfo("Não foram encontrados produtos com os critérios informados", jTextPane1);
+            if(produtosFiltrados != null && produtosFiltrados.size() > 0) {
+                LogTelaUtils.logaInfo(String.format("Carregados [%d] produtos.", produtosFiltrados.size()), jTextPane1);
+                eService.geraEtiquetasEletronicas(filial, regiao, produtosFiltrados, jTextPane1, somenteEstoquePositivo, repositorioArquivos);
+            } else {
+                eService.logaInfo("Não foram encontrados produtos com os critérios informados", jTextPane1);
+            }
         }
         
         eService.logaInfo("Processo finalizado", jTextPane1);

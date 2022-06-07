@@ -101,7 +101,7 @@ public class EtiquetaEletronicaService {
     private ProdutoRepository produtoRepository;
     
     public Set<Long> carregaCodProdutosComAlteracaoDePrecoPeriodo(Filial filial, Regiao regiao,
-            Date dataInicial, Date dataFinal) {
+            Date dataInicial, Date dataFinal, List<Long> codprodsFilter) {
         
         Set<Long> codprods = new HashSet<>();
         
@@ -123,6 +123,7 @@ public class EtiquetaEletronicaService {
                     .regiao(regiao)
                     .dataAlteracaoInicial(dataInicial)
                     .dataAlteracaoFinal(dataFinal)
+                    .codProds(codprodsFilter)
                     .build();
             tabelaPrecoRepository.findAll(TabelaPrecoSpec.filtro(filtro)).forEach(p -> codprods.add(p.getCodprod()));
         }
@@ -182,8 +183,8 @@ public class EtiquetaEletronicaService {
                         
                         TabelaPreco tp = tabelaPrecoRepository.findById(new TabelaPrecoId(p.getCodprod(), regiao.getNumregiao())).get();
                         
-                        final int qtminimaatacadopf = pf.getQtminimaatacado();
-                        final int qtminimaatacado = p.getQtminimaatacado();
+                        final int qtminimaatacadopf = pf.getQtminimaatacado() == null ? 0 : pf.getQtminimaatacado();
+                        final int qtminimaatacado = p.getQtminimaatacado() == null? 0 : p.getQtminimaatacado();
                         
                         embalagens.forEach(emb -> {
                             registros.add(registroToledoBuilder

@@ -119,57 +119,16 @@ public class AgendamentoEtiquetaEletronicaService extends Thread {
                 labelStatus.setText("Em execução ...");
                 jTextPane1.setText(null);
                 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                ProdutoService produtoService = ctx.getBean(ProdutoService.class);
-                EtiquetaEletronicaService eService = ctx.getBean(EtiquetaEletronicaService.class);
-                String strDtInicio = sdf.format(new Date(dateChooserCombo3.getCurrent().getTimeInMillis()));
-                String strDtFim = sdf.format(new Date(dateChooserCombo4.getCurrent().getTimeInMillis()));
-
-                eService.logaInfo("Iniciando processo", jTextPane1);
-
-                List<Produto> produtosFiltrados;
-
-                if (jCheckBoxFiltroDataPrecoAlterado.isSelected()) {
-                    LogTelaUtils.logaInfo(
-                            String.format("Verificando produtos com alteração de preço entre %s e %s", strDtInicio, strDtFim), jTextPane1);
-                    eService = ctx.getBean(EtiquetaEletronicaService.class);
-
-                    Set<Long> codprods = eService.carregaCodProdutosComAlteracaoDePrecoPeriodo(filial, regiao,
-                            new Date(dateChooserCombo3.getCurrent().getTimeInMillis()), new Date(dateChooserCombo4.getCurrent().getTimeInMillis()));
-                    FiltroProduto filtro = FiltroProduto.builder()
-                            .codigos(codprods)
-                            .build();
-                    produtosFiltrados = produtoService.carregaProdutos(filtro);
-                    eService.logaInfo("Produtos carregados", jTextPane1);
-                } else {
-                    eService.logaInfo("Carregando produtos", jTextPane1);
-                    FiltroProduto filtro = FiltroProduto.builder()
-                            .categorias(categorias)
-                            .departamentos(departamentos)
-                            .fornecedor(fornecedor)
-                            .produtos(produtos)
-                            .secoes(secoes)
-                            .subcategorias(subCategorias)
-                            .build();
-
-
-                    produtosFiltrados = produtoService.carregaProdutos(filtro);
-                    eService.logaInfo("Produtos carregados", jTextPane1);
-
-                }
-                if(produtosFiltrados != null && produtosFiltrados.size() > 0) {
-                    eService.geraEtiquetasEletronicas(filial, regiao, produtosFiltrados, jTextPane1, somenteEstoquePositivo, repositorioArquivos);
-                } else {
-                    eService.logaInfo("Não foram encontrados produtos com os critérios informados", jTextPane1);
-                }
-
-                eService.logaInfo("Processo finalizado", jTextPane1);
-
+                EtiquetaEletronicaServiceProcess p = new EtiquetaEletronicaServiceProcess(filial, departamentos, secoes, categorias, 
+                        subCategorias, fornecedor, regiao, produtos, ctx, dateChooserCombo3, dateChooserCombo4, jTextPane1, 
+                        jCheckBoxFiltroDataPrecoAlterado, somenteEstoquePositivo, repositorioArquivos);
+                p.start();
                 
                 timestamp = Calendar.getInstance().getTimeInMillis();
                 proximaExecucao = getProximaExecucao(false);
                 
                 labelStatus.setText("Proxima execução: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date(proximaExecucao)));
+                
                 
             } else {
                 try {
