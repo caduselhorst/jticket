@@ -62,12 +62,9 @@ public class FormPrincipal extends javax.swing.JFrame {
         initComponents();
         configuraLaf();
         configuraSairESC();
-        verificaTipoPreço();
-                
-        carregaPreferencias();
+        verificaTipoPreço();                
+        carregaPreferencias();        
         
-        
-
     }
         
     public void configuraSairESC() {
@@ -109,7 +106,7 @@ public class FormPrincipal extends javax.swing.JFrame {
 
     private void verificaTipoPreço() {
         ParametroValorService service = ctx.getBean(ParametroValorService.class);
-        TipoPreco tipoPreco = service.verificaTipoPreco();
+        tipoPreco = service.verificaTipoPreco();
         if (tipoPreco.equals(TipoPreco.PRODUTO)) {
             jLabel10.setText("Precificação por Produto (Rotina 201)");
         } else {
@@ -261,7 +258,6 @@ public class FormPrincipal extends javax.swing.JFrame {
         jButtonPesquisaFornecedor.setEnabled(!jButtonPesquisaFornecedor.isEnabled());
         
         jCheckBoxEstoquePositivo.setEnabled(!jCheckBoxEstoquePositivo.isEnabled());
-        jCheckBoxFiltroDataPrecoAlterado.setEnabled(!jCheckBoxFiltroDataPrecoAlterado.isEnabled());
         
         jButtonProcessar.setEnabled(!jButtonProcessar.isEnabled());
         jButtonLimpar.setEnabled(!jButtonLimpar.isEnabled());
@@ -279,6 +275,9 @@ public class FormPrincipal extends javax.swing.JFrame {
         jTextField5.setEnabled(!jTextField5.isEnabled());
         jTextField8.setEnabled(!jTextField8.isEnabled());
         jTextField9.setEnabled(!jTextField9.isEnabled());
+        
+        dateChooserCombo3.setEnabled(!dateChooserCombo3.isEnabled());
+        dateChooserCombo4.setEnabled(!dateChooserCombo4.isEnabled());
     }
 
     /**
@@ -317,7 +316,6 @@ public class FormPrincipal extends javax.swing.JFrame {
         jTextFieldProduto = new javax.swing.JTextField();
         jButtonPesquisaFornecedor = new javax.swing.JButton();
         jTextFieldFornecedor = new javax.swing.JTextField();
-        jCheckBoxFiltroDataPrecoAlterado = new javax.swing.JCheckBox();
         dateChooserCombo3 = new datechooser.beans.DateChooserCombo();
         dateChooserCombo4 = new datechooser.beans.DateChooserCombo();
         jCheckBoxEstoquePositivo = new javax.swing.JCheckBox();
@@ -335,6 +333,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jButtonSair = new javax.swing.JButton();
@@ -485,17 +484,8 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jCheckBoxFiltroDataPrecoAlterado.setText("Filtrar produtos com preços alterados no período");
-        jCheckBoxFiltroDataPrecoAlterado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxFiltroDataPrecoAlteradoActionPerformed(evt);
-            }
-        });
-
-        dateChooserCombo3.setEnabled(false);
         dateChooserCombo3.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
 
-        dateChooserCombo4.setEnabled(false);
         dateChooserCombo4.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
 
         jCheckBoxEstoquePositivo.setText("Considerar somente produtos com estoque maior que zero");
@@ -648,6 +638,10 @@ public class FormPrincipal extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(0, 0, 255));
         jLabel11.setText("jLabel11");
 
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel12.setText("Dt. alt. preço");
+        jLabel12.setToolTipText("");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -655,67 +649,9 @@ public class FormPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBoxEstoquePositivo, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxEstoquePositivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel1)))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonPesquisaSubCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonPesquisaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonPesquisaFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonPesquisaSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonPesquisaCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonPesquisaDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonPesquisaFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonPesquisaRegiao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldProduto, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldSubCategoria, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldCategoria, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldSecao, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldArea, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldDepartamento)
-                            .addComponent(jTextFieldFornecedor)
-                            .addComponent(jTextFieldFilial, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBoxFiltroDataPrecoAlterado)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dateChooserCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButtonProcessar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -727,7 +663,66 @@ public class FormPrincipal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dateChooserCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButtonPesquisaSubCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonPesquisaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonPesquisaFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButtonPesquisaSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonPesquisaCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonPesquisaDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonPesquisaFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonPesquisaRegiao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldProduto, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldSubCategoria, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldCategoria, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldSecao, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldArea, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldDepartamento)
+                                    .addComponent(jTextFieldFornecedor)
+                                    .addComponent(jTextFieldFilial, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -782,12 +777,11 @@ public class FormPrincipal extends javax.swing.JFrame {
                     .addComponent(jTextFieldFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBoxFiltroDataPrecoAlterado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateChooserCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(dateChooserCombo4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateChooserCombo3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
                 .addComponent(jCheckBoxEstoquePositivo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -868,7 +862,7 @@ public class FormPrincipal extends javax.swing.JFrame {
                         .addComponent(jButton1))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel9)
-                        .addGap(0, 185, Short.MAX_VALUE))
+                        .addGap(0, 183, Short.MAX_VALUE))
                     .addComponent(jScrollPane2))
                 .addContainerGap())
         );
@@ -1050,18 +1044,13 @@ public class FormPrincipal extends javax.swing.JFrame {
                 } else {
                     EtiquetaEletronicaServiceProcess process = new EtiquetaEletronicaServiceProcess(
                             filial, departamentos, secoes, categorias, subCategorias, fornecedor, regiao, produtos, ctx, 
-                            dateChooserCombo3, dateChooserCombo4, jTextPane1, jCheckBoxFiltroDataPrecoAlterado, jCheckBoxEstoquePositivo.isSelected(), jTextField1.getText());
+                            dateChooserCombo3.getCurrent(), dateChooserCombo4.getCurrent(), jTextPane1, jCheckBoxEstoquePositivo.isSelected(), jTextField1.getText(), tipoPreco);
                     process.start();
                 }
             }
         }
         
     }//GEN-LAST:event_jButtonProcessarActionPerformed
-
-    private void jCheckBoxFiltroDataPrecoAlteradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxFiltroDataPrecoAlteradoActionPerformed
-        dateChooserCombo3.setEnabled(jCheckBoxFiltroDataPrecoAlterado.isSelected());
-        dateChooserCombo4.setEnabled(jCheckBoxFiltroDataPrecoAlterado.isSelected());
-    }//GEN-LAST:event_jCheckBoxFiltroDataPrecoAlteradoActionPerformed
 
     private void jButtonLimpar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpar1ActionPerformed
         Preferencias prefs = Preferencias.builder()
@@ -1076,7 +1065,7 @@ public class FormPrincipal extends javax.swing.JFrame {
                 .somenteEstoquePositivo(jCheckBoxEstoquePositivo.isSelected())
                 .subCategorias(subCategorias)
                 .processoAgendado(jCheckBox1.isSelected())
-                .filtrarPorDataAlteracaoPreco(jCheckBoxFiltroDataPrecoAlterado.isSelected())
+                .filtrarPorDataAlteracaoPreco(true)
                 .build();
         try {
             prefs.salvarPreferencias();
@@ -1344,6 +1333,13 @@ public class FormPrincipal extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         FormAgendamentoProcesso f = new FormAgendamentoProcesso(this, true);
         f.setVisible(true);
+        preferenciasAgendamento = new PreferenciasAgendamento().carregarPreferencias();
+        
+        if(preferenciasAgendamento == null) {
+            jLabel11.setText("Parâmetros para processamento automático não configurados");
+        } else {
+            jLabel11.setText("Parâmetros para processamento automático configurados");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
@@ -1355,8 +1351,8 @@ public class FormPrincipal extends javax.swing.JFrame {
             if(preferenciasAgendamento != null) {
                 agendamentoService = new AgendamentoEtiquetaEletronicaService(filial, departamentos, secoes, categorias, 
                         subCategorias, fornecedor, regiao, produtos, ctx, dateChooserCombo3, dateChooserCombo4, 
-                        jTextPane1, jCheckBoxFiltroDataPrecoAlterado, rootPaneCheckingEnabled, jTextField1.getText(), 
-                        preferenciasAgendamento, jLabel11);
+                        jTextPane1, rootPaneCheckingEnabled, jTextField1.getText(), 
+                        preferenciasAgendamento, jLabel11, tipoPreco);
                 agendamentoService.start();
                 habilitaDesabilitaCampoProcessamentoAutomatico();
             } else {
@@ -1410,6 +1406,8 @@ public class FormPrincipal extends javax.swing.JFrame {
     private Fornecedor fornecedor;
     private Regiao regiao;
     private List<Produto> produtos;
+    
+    private TipoPreco tipoPreco;
 
     private FilialService filialService;
     private FormularioPrincipalService formService;
@@ -1441,10 +1439,10 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSair;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBoxEstoquePositivo;
-    private javax.swing.JCheckBox jCheckBoxFiltroDataPrecoAlterado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

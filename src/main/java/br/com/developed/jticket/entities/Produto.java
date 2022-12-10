@@ -38,18 +38,11 @@ public class Produto implements Serializable {
     private Long codauxiliar;
     private Long codauxiliar2;
     
-    @ManyToOne
-    @JoinColumn(name = "codfornec")
-    private Fornecedor fornecedor;
+    private Long codfornec;
     
+    private Long codepto;
     
-    @ManyToOne
-    @JoinColumn(name = "codepto")
-    private Departamento departamento;
-    
-    @ManyToOne
-    @JoinColumn(name = "codsec")
-    private Secao secao;
+    private Long codsec;
     
     private Long codcategoria;
     private Long codsubcategoria;

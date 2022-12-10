@@ -29,9 +29,21 @@ import lombok.Setter;
 @Builder
 public class PreferenciasAgendamento implements Serializable {
     
-    private boolean diariamente;
-    private String hora;
-    private boolean aCada;
+    private boolean recorrente;
+    private boolean seg;
+    private String horarioSeg;
+    private boolean ter;
+    private String horarioTer;
+    private boolean qua;
+    private String horarioQua;
+    private boolean qui;
+    private String horarioQui;
+    private boolean sex;
+    private String horarioSex;
+    private boolean sab;
+    private String horarioSab;
+    private boolean dom;
+    private String horarioDom;
     private Integer indexHoraMinuto;
     private Integer quantidade;
     private String apartirDe;

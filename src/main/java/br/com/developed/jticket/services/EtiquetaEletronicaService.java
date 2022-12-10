@@ -17,6 +17,7 @@ import br.com.developed.jticket.models.FiltroEmbalagem;
 import br.com.developed.jticket.models.FiltroTabelaPreco;
 import br.com.developed.jticket.models.PrecoPromocional;
 import br.com.developed.jticket.models.RegistroToledo;
+import br.com.developed.jticket.repositories.DepartamentoRepository;
 import br.com.developed.jticket.repositories.EmbalagemRepository;
 import br.com.developed.jticket.repositories.InfoUltimaEntrada;
 import br.com.developed.jticket.repositories.ProdutoFilialRepository;
@@ -99,6 +100,8 @@ public class EtiquetaEletronicaService {
     private ProdutoFilialRepository produtoFilialRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
     
     public Set<Long> carregaCodProdutosComAlteracaoDePrecoPeriodo(Filial filial, Regiao regiao,
             Date dataInicial, Date dataFinal, List<Long> codprodsFilter) {
@@ -150,7 +153,7 @@ public class EtiquetaEletronicaService {
                 RegistroToledo.RegistroToledoBuilder registroToledoBuilder = RegistroToledo.builder();
                 registroToledoBuilder
                         .codigo(code)
-                        .departamento(p.getDepartamento().getDescricao())
+                        .departamento(p.getCodepto() == null || p.getCodepto() == 0 ? "INDEFINIDO" : departamentoRepository.findById(p.getCodepto()).get().getDescricao())
                         .qtdEstoque(estoqueDisponivel);
                 
                 if (filial.getUtilizavendaporembalagem() != null && filial.getUtilizavendaporembalagem().equals("S")) {
@@ -187,10 +190,11 @@ public class EtiquetaEletronicaService {
                         final int qtminimaatacado = p.getQtminimaatacado() == null? 0 : p.getQtminimaatacado();
                         
                         embalagens.forEach(emb -> {
+                            log.info(emb.toString());
                             registros.add(registroToledoBuilder
                                     .codBarrasPrincipal(emb.getCodauxiliar())
                                     .descricao(emb.getDescricaoecf() != null ? emb.getDescricaoecf() : p.getDescricao())
-                                    .unidade(emb.getEmbalagem().substring(0, 2))
+                                    .unidade(emb.getEmbalagem() != null ? (emb.getEmbalagem().length() > 2 ? emb.getEmbalagem().substring(0, 2) : emb.getEmbalagem()) : "")
                                     .precoItemUnitario(bp.getPvenda() * emb.getQtunit())
                                     .precoItemUnitarioPromo((precoPromo != null && precoPromo.getPrecofixo() != 0.0) ? (precoPromo.getPrecofixo() * emb.getQtunit()) : 0.0)
                                     .precoItemMaster(bp.getPvendaatac() * emb.getQtunit())
@@ -198,15 +202,15 @@ public class EtiquetaEletronicaService {
                                     .tipo(bp.getPvenda() != bp.getPvendaatac() ? "ATACADO" : "NORMAL")
                                     .personalizado0(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
                                     .personalizado1(String.valueOf(p.getQtunitcx()))
-                                    .personalizado2(String.valueOf(p.getDepartamento().getCodepto()))
+                                    .personalizado2(String.valueOf(p.getCodepto()))
                                     .personalizado3(String.valueOf(p.getCodprod()))
                                     .personalizado4(String.valueOf(qtminimaatacadopf != 0 ? qtminimaatacadopf : qtminimaatacado))
                                     .personalizado5(String.valueOf(p.getQtunitcx()))
                                     .personalizado6(String.format("%.2f", bp.getPvendaatac() * emb.getQtunit()).replace(",", ""))
                                     .personalizado7("")
-                                    .personalizado8(new SimpleDateFormat("dd/MM/yyyy").format(ultimaEntrada.getDtultent()))
+                                    .personalizado8(( (ultimaEntrada != null && ultimaEntrada.getDtultent() != null) ? new SimpleDateFormat("dd/MM/yyyy").format(ultimaEntrada.getDtultent()) : ""))
                                     .personalizado9(String.valueOf(ultimaEntrada.getNumnotaultent()))
-                                    .personalizado10(new SimpleDateFormat("dd/MM/yyyy").format(tp.getDtultaltpvenda()))
+                                    .personalizado10(((tp != null && tp.getDtultaltpvenda() != null) ? new SimpleDateFormat("dd/MM/yyyy").format(tp.getDtultaltpvenda()) : ""))
                                     .personalizado11((precoPromo != null && precoPromo.getPrecofixo() != 0.0) ? "PROMO" : "NORMAL")
                                     .build());
                         });
@@ -228,7 +232,7 @@ public class EtiquetaEletronicaService {
     
     private void geraArquivos(String repositorioArquivo, Integer code, List<RegistroToledo> registros, JTextPane logTela) {
         try {
-            String prefix = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String prefix = new SimpleDateFormat("dd.MM.yyyy_HH.mm").format(new Date());
 
             // Verifica a existência dos repositórios
             File diri1 = new File(repositorioArquivo + "/DataFiles");

@@ -1,4 +1,4 @@
-package br.com.developed.jticket.components;
+package br.com.developed.jticket.formatters;
 
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
